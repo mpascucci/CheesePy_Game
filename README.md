@@ -16,18 +16,13 @@ like conditions (if-else), loops (while/for), functions, and language syntax.
 
 1. Install [Python 3](https://www.python.org/downloads/) on your system,  if you haven't already.
 
-2. [Download the game](https://mpascucci.altervista.org/courses/CS1040/cheese_py/cheesepy_game.zip).
-The downlaoded file is an archive (zip file) named cheesepy_game.zip
-
-3. Go see your downloads folder and extract the game archive.
-
-4. Open a terminal window into the Download folder and install the game with:
+2. From a terminal window, install cheesepy game with the following command:
 
 ```bash
-pip install ./cheesepy_game
+pip install cheesepy_game
 ```
 
-5. Check that the install went well by running this commmand:
+3. Check that the install went well by running this commmand:
 
 ```python
 python -m cheesepy_game
