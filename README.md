@@ -51,7 +51,7 @@ Buddy.set_name("Sarah")
 start_game()
 ```
 
-![level1](img/level1.png)
+![level1](./img/level1.png)
 
 A window will pop-up showing the first puzzle. If you have a look at the printed output you will see something like this:
 
