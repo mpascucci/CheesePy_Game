@@ -2,7 +2,7 @@
 
 ## Introduction
 
-<img style="width: 100%;" src="./img/cheesePy_Cover.png">
+<img style="width: 100%;" src="https://mpascucci.github.io/CheesePy_Game/img/cheesePy_Cover.png">
 
 **CheesePy** is a maze-based game crafted to facilitate the understanding of fundamental **principles in computer programming**.
 
@@ -46,7 +46,7 @@ Buddy.set_name("Sarah")
 start_game()
 ```
 
-![level1](./img/level1.png)
+![level1](https://mpascucci.github.io/CheesePy_Game/img/level1.png)
 
 A window will pop-up showing the first puzzle. If you have a look at the printed output you will see something like this:
 
