@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name='cheesepy_game'
-version='1.1.24'
+version='1.1.25'
 authors = [ { name="Marco Pascucci", email='marpas.paris@gmail.com' }]
 description='A pedagogic Python game with mice and cheese'
 readme = "README.md"
@@ -13,6 +13,11 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.22.4",
+    "pygame>=2.5.2",
+    "labyrinth-py>=1.0.4"
 ]
 
 [project.urls]
