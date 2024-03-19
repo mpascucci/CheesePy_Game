@@ -58,12 +58,12 @@ class Strawberry(Collectable_item):
         super().__init__(position=position, name='strawberry', image=icons.strawberry, bg_color=colors.STRAWBERRY_COLOR)
 
 
-@dataclass
 class Exit():
-    position: Position
-    image: object = icons.hole
-    id: int = None
-    bg_color: object = colors.FLOOR_COLOR
+    def __init__(self, position: Position, image: object = icons.hole, id: int = None, bg_color=colors.FLOOR_COLOR):
+        self.position = position
+        self.image = image
+        self.id = id
+        self.bg_color = bg_color
 
 
 def get_cell(position: Position) -> Cell:
