@@ -12,6 +12,8 @@ They provide Python code to direct the mouse's actions.
 Through conquering these levels, you will grasp essential programming concepts
 like conditions (if-else), loops (while/for), functions, and language syntax.
 
+Once installed, the game will run **completely offline**.
+
 ## Install
 
 1. Install [Python 3](https://www.python.org/downloads/) on your system,  if you haven't already.
@@ -24,7 +26,7 @@ pip install cheesepy_game
 
 3. Check that the install went well by running this commmand:
 
-```python
+```bash
 python -m cheesepy_game
 ```
 
@@ -72,7 +74,7 @@ That is it, this is exactly what you need to do to complete this level.
 But if you want to get to the next level you need to solve this one with code. Let's see.
 
 In order to get the cheese, the mouse has to move 3 times to the right to get on the cheese, then grab it.
-You can achieve this behavior with the following code:
+You can achieve this behavior with the code here belo. Delete the prevous code and copy-paste the following:
 
 ```python
 from cheesepy_game import start_game, Buddy
