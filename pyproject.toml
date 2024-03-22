@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name='cheesepy_game'
-version='1.1.25'
+version='1.1.30'
 authors = [ { name="Marco Pascucci", email='marpas.paris@gmail.com' }]
 description='A pedagogic Python game with mice and cheese'
 readme = "README.md"
@@ -21,4 +21,5 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mpascucci/CheesePy_Game"
+Homepage = "https://mpascucci.github.io/CheesePy_Game/cheesepy_game.html"
+Source = "https://github.com/mpascucci/CheesePy_Game"
