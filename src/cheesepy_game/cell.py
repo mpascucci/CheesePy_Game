@@ -9,7 +9,7 @@ class Cell_types():
     """represents one case of the game's chessboard"""
     FLOOR = 0
     WALL = 1
-
+    WATER = 2
 
 class Cell():
     def __init__(self, position_xy) -> None:
@@ -18,6 +18,9 @@ class Cell():
         self.items: List[Collectable_item] = []  # a list of Collectable_items
         self.exit: Exit = None
         self.type: Cell_types = Cell_types.FLOOR
+        self.visited = False # cell was visited
+        self.path = False # cell is part of a path
+        self.highlight = False # cell is highlighted
 
     def __str__(self):
         return f"Cell {self.position}"
@@ -34,6 +37,8 @@ class Cell():
     def is_blocking(self):
         return self.type in [Cell_types.WALL]
 
+    def is_water(self):
+        return self.type == Cell_types.WATER
 
 class Collectable_item():
     def __init__(self, position: Position, name: str, image, bg_color=None):

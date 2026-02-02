@@ -2,6 +2,9 @@
 from time import sleep
 import numpy as np
 import threading
+import sys
+
+
 
 if True:
     # keep imports in this order
@@ -60,6 +63,8 @@ def draw_grid():
                 color = cur_cell.items[-1].bg_color
             elif cur_cell.type == Cell_types.FLOOR:
                 color = colors.FLOOR_COLOR
+            elif cur_cell.type == Cell_types.WATER:
+                color = colors.FLOOR_COLOR
             else:
                 raise Cheese_ValueError("Cell background color not defined")
 
@@ -73,6 +78,8 @@ def draw_grid():
                 image = cur_cell.exit.image
             elif cur_cell.type == Cell_types.WALL:
                 image = icons.wall
+            elif cur_cell.type == Cell_types.WATER:
+                image = icons.water
             elif cur_cell.type is not None:
                 pass
             else:
@@ -95,6 +102,21 @@ def draw_grid():
                 # player is on this cell and is carrying an item
                 image = gs.player.collected_item.image
                 image = pg.transform.scale_by(image, 0.5)
+                config.screen.blit(image, rect)
+
+            if cur_cell.visited:
+                image = icons.dot
+                image = pg.transform.scale_by(image, config.cell_side/config.DEFAULT_CELL_SIDE)
+                config.screen.blit(image, rect)
+
+            if cur_cell.path:
+                image = icons.dot_green
+                image = pg.transform.scale_by(image, config.cell_side/config.DEFAULT_CELL_SIDE)
+                config.screen.blit(image, rect)
+
+            if cur_cell.highlight:
+                image = icons.frame
+                image = pg.transform.scale_by(image, config.cell_side/config.DEFAULT_CELL_SIDE)
                 config.screen.blit(image, rect)
 
             # display items number
@@ -157,11 +179,16 @@ def handle_events():
             # click in editing mode
             x, y = pg.mouse.get_pos()
             for r in gs._cells:
+                if ctlr_key_pressed():
+                    new_type = Cell_types.WATER
+                else:
+                    new_type = Cell_types.WALL
+
                 for c in r:
                     if is_point_in_cell(c, y, x):
-                        if c.type == Cell_types.FLOOR:
-                            c.type = Cell_types.WALL
-                        elif c.type == Cell_types.WALL:
+                        if c.type != new_type:
+                            c.type = new_type
+                        elif c.type != Cell_types.FLOOR:
                             c.type = Cell_types.FLOOR
         elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
             # SPACE BAR
@@ -190,17 +217,24 @@ def handle_events():
                 case pg.K_f:
                     Buddy._move_forward()
                 case pg.K_e:
+                    gs.cheating = False
                     if ctlr_key_pressed():
                         # enable wall editing
                         gs.editingMode = not gs.editingMode
                         messanger.say(f'Editing mode: {"ON" if gs.editingMode else "OFF"}')
                 case pg.K_s:
+                    gs.cheating = False
                     if ctlr_key_pressed():
-                        fname = "./map.ppm"
-                        save_map_to_image(fname)
-                        messanger.say(f"Matrix saved in {fname}")
+                        fname = "map.ppm"
+                        try:
+                            save_map_to_image(fname)
+                            messanger.say(f"Matrix saved in {fname}")
+                        except Exception as e:
+                            messanger.say(f"Impossible to save the map")
+                            messanger.say(e)
                 case pg.K_q:
                     gs.run = False
+                    sys.exit(0)
                 case _:
                     pass
         elif event.type == pg.QUIT:
@@ -242,6 +276,102 @@ def check_victory(cur_level, user_thread):
                 else:
                     victory_end(cur_level)
 
+class Introspection:
+    @staticmethod
+    def get_exit_positions(level):
+        positions = []
+        for item in level.exits:
+            positions.append(item.position)
+        return positions
+    
+    @staticmethod
+    def get_item_positions(level):
+        positions = []
+        for item in level.items:
+            d = dict(name=item.name, pos=item.position)
+            positions.append(d)
+        return positions
+    @staticmethod
+    def get_walls():
+        walls = []
+        for r in range(config.GRID_ROWS):
+            for c in range(config.GRID_COLS):
+                cell = get_cell(Position(c,r))
+                if cell.type == Cell_types.WALL:
+                    walls.append((c,r))
+        return walls
+
+def gel_level_info(level_password=None):
+    level = levels[check_level_password(Buddy._name, level_password)]
+    level.load()
+    info = {
+        "exits": Introspection.get_exit_positions(level),
+        "items": Introspection.get_item_positions(level),
+        "walls": Introspection.get_walls()
+    }
+    return info
+
+class CellController:
+    @staticmethod
+    def switch_fringe(cell_position: Position):
+       cell = get_cell(cell_position)
+       cell.highlight = not cell.highlight
+    @staticmethod
+    def switch_expanded(cell_position: Position):
+       cell = get_cell(cell_position)
+       cell.visited = not cell.visited
+    @staticmethod
+    def switch_path(cell_position: Position):
+       cell = get_cell(cell_position)
+       cell.path = not cell.path
+    @staticmethod
+    def _set_cell(cell_type, cell_position: Position):
+        try:
+            cell = get_cell(cell_position)
+            cell.type = cell_type
+        except IndexError:
+            x,y = cell_position
+            print(f"Cell ({x},{y}) is out of bounds.")
+            return
+        
+    @staticmethod
+    def is_cell_of_type(cell_type, cell_position: Position):
+        try:
+            cell = get_cell(cell_position)
+            return cell.type == cell_type
+        except IndexError:
+            x,y = cell_position.to_tuple()
+            print(f"Cell ({x},{y}) is out of bounds.")
+            return False
+    @staticmethod
+    def is_wall(pos: Position) -> bool:
+        return CellController.is_cell_of_type(Cell_types.WALL, pos)
+    @staticmethod
+    def is_water(pos: Position) -> bool:
+        return CellController.is_cell_of_type(Cell_types.WATER, pos)
+    @staticmethod
+    def is_exit(pos: Position) -> bool:
+        return get_cell(pos).is_exit()
+    @staticmethod
+    def has_items(pos: Position) -> bool:
+        return get_cell(pos).has_items()
+    @staticmethod
+    def is_floor(pos: Position) -> bool:
+        return CellController.is_cell_of_type(Cell_types.FLOOR, pos)
+    @staticmethod
+    def get_neighbors(position: Position):
+        neighbors = []
+        deltas = [(-1,0),(1,0),(0,-1),(0,1)]
+        for dx,dy in deltas:
+            new_x = position.x + dx
+            new_y = position.y + dy
+            try:
+                _ = get_cell(Position(new_x,new_y))
+                neighbors.append(Position(new_x,new_y))
+            except IndexError:
+                pass
+        return neighbors
+        
 
 def start_game(solution=None, password=None):
     """Start one level of CheesePy.
@@ -258,6 +388,7 @@ def start_game(solution=None, password=None):
         def solution(): return None
 
     user_thread = threading.Thread(target=user_thread_target, args=[solution])
+    user_thread.daemon = True
     user_thread.start()
 
     cur_level = check_level_password(Buddy._name, password)
@@ -283,4 +414,25 @@ def start_game(solution=None, password=None):
         pg.display.update()
 
     user_thread.join()
+    pg.quit()
+
+
+
+def start_game_nothread(level=1):
+    cur_level = level
+
+    pg.display.set_caption(f"Cheese Py - level {cur_level}")
+    levels[cur_level].load()
+
+    pg.key.set_repeat()  # disable repeat keydown when holding keys
+
+    while gs.run:
+        sleep(1 / config.FRAMES_PER_SECOND)  # frame
+        handle_events()
+
+        with gs.lock:
+            check_victory(cur_level, None)
+            draw_grid()
+
+        pg.display.update()
     pg.quit()

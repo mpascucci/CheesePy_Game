@@ -17,7 +17,10 @@ class icons():
     strawberry = load_image("strawberry.png")
     hole = load_image("hole.png")
     wall = load_image("wall.png")
-
+    water = load_image("water.png")
+    dot = load_image("dot.png")
+    dot_green = load_image("dot_green.png")
+    frame = load_image("frame.png")
 
 if __name__ == "__main__":
     print(load_image("mouse.png"))
@@ -26,6 +29,11 @@ if __name__ == "__main__":
 class colors():
     WALL_COLOR = Color(210, 47, 39)
     FLOOR_COLOR = Color("black")
+    
+    FRINGE_CELL_COLOR = Color("lightblue")
+    EXPANDED_CELL_COLOR = Color("gray30")
+    PATH_CELL_COLOR = Color("green")
+
     PLAYER_COLOR_DEFAULT = Color("white")
     CHEESE_COLOR = Color("yellow")
     STRAWBERRY_COLOR = Color("pink")

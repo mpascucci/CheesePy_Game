@@ -101,7 +101,7 @@ levels = [
         wall_positions=[],
         instructions="Let's go home!"
     ),
-    new_level_from_map('stairs.ppm',
+    new_level_from_map('stairs.ppm', 
                        player_init_position=Position(1, 2),
                        check_victory=lambda: player_on_exit_id(1),
                        items=[],
@@ -128,7 +128,7 @@ levels = [
         walls_around=True,
         instructions="What a mess! Bring the items in the corresponding hole."
     ),
-    Level(  # 8
+    Level( 
         ROWS=4,
         COLS=7,
         cell_side=50,
@@ -207,5 +207,56 @@ levels = [
                        instructions="And here we are, this is the last level.\n"\
                                     "Well done, You finished the game!"
                        ),
+    Level( # 26: tree search, big empty level
+        ROWS=10,
+        COLS=10,
+        cell_side=25,
+        player_init_position=Position(1, 1),
+        check_victory=lambda: player_has_item_id(1),
+        exits=[],
+        items=[Cheese(position=Position(9, 9), id=1)],
+        wall_positions=[],
+        instructions="Take the cheese!"
+    ),
+    new_level_from_map('tree_search_20x20.ppm',
+        player_init_position=Position(1, 1),
+        check_victory=lambda: player_has_item_id(1),
+        cell_side=25,
+        exits=[],
+        items=[Cheese(position=Position(9, 9), id=1)],
+        instructions="Take the cheese!"
+    ),
+    new_level_from_map('tree_search_25x25_halfmaze.ppm',
+        player_init_position=Position(1, 1),
+        check_victory=lambda: player_has_item_id(1),
+        cell_side=25,
+        exits=[],
+        items=[Cheese(position=Position(10, 12), id=1)],
+        instructions="Take the cheese!"
+    ),
+    new_level_from_map('map.ppm',
+        player_init_position=Position(1, 1),
+        check_victory=lambda: player_has_item_id(1),
+        cell_side=25,
+        exits=[],
+        items=[Cheese(position=Position(13, 13), id=1)],
+        instructions="Take the cheese!"
+    ),
+    new_level_from_map('map_flooded.ppm',
+        player_init_position=Position(1, 1),
+        check_victory=lambda: player_has_item_id(1),
+        cell_side=25,
+        exits=[],
+        items=[Cheese(position=Position(13, 13), id=1)],
+        instructions="Take the cheese!"
+    ),
+    new_level_from_map('map_flooded2.ppm',
+        player_init_position=Position(1, 1),
+        check_victory=lambda: player_has_item_id(1),
+        cell_side=25,
+        exits=[],
+        items=[Cheese(position=Position(13, 13), id=1)],
+        instructions="Take the cheese!"
+    ),
 
 ]

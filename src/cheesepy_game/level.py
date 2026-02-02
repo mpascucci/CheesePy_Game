@@ -19,6 +19,7 @@ class Level():
     cell_side: int = DEFAULT_CELL_SIDE
     grid_lines_thickness: int = 1
     show_grid_borders: bool = True
+    water_positions: list = field(default_factory=list)
     exits: List[Exit] = field(default_factory=list)
     items: List[Collectable_item] = field(default_factory=list)
     instructions: str = ''
@@ -42,7 +43,6 @@ class Level():
         gs.disable_NSEW = self.disable_NSEW
 
     def _setup_cells(self):
-
         if self.walls_around:
             for r, row in enumerate(gs._cells):
                 for c, cell in enumerate(row):
@@ -50,9 +50,15 @@ class Level():
                         # this cell is on the border of the map
                         cell.type = Cell_types.WALL
 
+        # walls
         for t in self.wall_positions:
             pos = Position(t[0], t[1])
             set_cell_type(pos, Cell_types.WALL)
+
+        # water cells
+        for t in self.water_positions:
+            pos = Position(t[0], t[1])
+            set_cell_type(pos, Cell_types.WATER)
 
         for e in self.exits:
             cell = get_cell(e.position)

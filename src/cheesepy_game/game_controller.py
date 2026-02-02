@@ -170,8 +170,12 @@ class GameController():
         except AttributeError:
             item = ''
         return item
+    
+    def get_position(self) -> "Position":
+        """Return the Position object representing the mouse's current position."""
+        return gs.player.pos
 
-    def get_position(self):
+    def get_position_coordinates(self):
         """Return the coordinates of the mouse at the current time.
 
         The coordinates are returned as a tuple of two integers (x,y) representing the x and y coordinate of the mouse.
@@ -230,3 +234,25 @@ class GameController():
         """Turn the direction of Buddy 90 degrees to the right"""
         self._wait()
         self._turn(1)
+
+    def walk_path(self,path):
+        """
+        Move Buddy through the solution path.
+        A solution path is a collection of Positions.
+        """
+        if path is None:
+            print("No solution found")
+            return
+        for pos in path:
+            bpos = self.get_position()
+            direction = (bpos.x - pos.x, bpos.y - pos.y)
+            match direction:
+                case (1, 0):
+                    self.move_west()
+                case (-1, 0):
+                    self.move_east()
+                case (0, 1):
+                    self.move_north()
+                case (0, -1):
+                    self.move_south()
+        self.take_item()

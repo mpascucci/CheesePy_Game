@@ -9,6 +9,9 @@ class Position():
 
     def __add__(self, other):
         return Position(self.x + other.x, self.y + other.y)
+    
+    def __sub__(self, other):
+        return Position(self.x - other.x, self.y - other.y)
 
     def __str__(self) -> str:
         return f"(x:{self.x}, y:{self.y})"
@@ -27,3 +30,6 @@ class Position():
         p.x += v
         p.y += v
         return p
+    
+    def __hash__(self):
+        return hash((self.x, self.y))
