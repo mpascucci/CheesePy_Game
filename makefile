@@ -10,4 +10,4 @@ test_pypi: clean dist
 	python3 -m twine upload --repository testpypi dist/*
 
 clean:
-	rm -r dist
+	rm -rf dist build

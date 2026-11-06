@@ -25,3 +25,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# PyPI upload credentials - never commit
+.pypirc
+.claude
+.vscode

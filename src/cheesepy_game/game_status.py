@@ -1,5 +1,6 @@
 from .cell import Collectable_item, Exit
-from typing import List
+from .position import Position
+from typing import List, Optional
 import threading
 from .graphics import colors
 lock = threading.Lock()
@@ -18,6 +19,6 @@ disable_NSEW = True  # disable the NORTH/SOUTH/EAST/WEST movement
 
 
 class player():
-    pos = None
+    pos: Optional[Position] = None
     color = colors.PLAYER_COLOR_DEFAULT
-    collected_item: Collectable_item = None
+    collected_item: Optional[Collectable_item] = None

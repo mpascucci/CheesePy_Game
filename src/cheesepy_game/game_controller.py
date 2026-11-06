@@ -204,8 +204,7 @@ class GameController():
 
         The minimum speed it 1, the maximum speed is 200.
         """
-        self._speed = max(speed, 1)
-        self._speed = min(speed, 200)
+        self._speed = min(max(speed, 1), 200)
 
     def take_item(self):
         """Take the item from the cell where the player is standing.

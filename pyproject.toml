@@ -1,12 +1,12 @@
 [build-system]
-requires = ["setuptools>=59.6.0"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name='cheesepy_game'
-version='1.1.30'
-authors = [ { name="Marco Pascucci", email='marpas.paris@gmail.com' }]
-description='A pedagogic Python game with mice and cheese'
+name = 'cheesepy_game'
+version = '1.1.31'
+authors = [{ name = "Marco Pascucci", email = 'marpas.paris@gmail.com' }]
+description = 'A pedagogic Python game with mice and cheese'
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
@@ -14,12 +14,22 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
 ]
-dependencies = [
-    "numpy>=1.22.4",
-    "pygame>=2.5.2",
-    "labyrinth-py>=1.0.4"
-]
+dependencies = ["numpy>=1.22.4", "pygame>=2.5.2", "labyrinth-py>=1.0.4"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
 
 [project.urls]
 Homepage = "https://mpascucci.github.io/CheesePy_Game/cheesepy_game.html"
 Source = "https://github.com/mpascucci/CheesePy_Game"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"*" = ["*.png", "*.ppm"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
